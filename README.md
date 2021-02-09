@@ -23,9 +23,10 @@ npm start
 ```
 
 Example
-http://localhost:3005/generator/:text/:bgColor/:imageName/:imageFormat
 
--   http://localhost:3005/generator/back%soon!/black/loading/gif
+-   http://localhost:3005/generator/:text/:textColor/:bgColor/:imageName/:imageFormat
 
--   RGB Background color replace "#" for "@"
-    -   http://localhost:3005/generator/back%20soon!/@15191F/loading2/gif
+    -   http://localhost:3005/generator/back%20soon!/green/black/loading/gif
+
+    -   RGB Background color replace "#" for "@"
+        -   http://localhost:3005/generator/back%20soon!/blue/@15191F/loading2/gif

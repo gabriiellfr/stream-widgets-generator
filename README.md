@@ -28,5 +28,5 @@ Example
 
     -   http://localhost:3005/generator/back%20soon!/green/black/loading/gif
 
-    -   RGB Background color replace "#" for "@"
-        -   http://localhost:3005/generator/back%20soon!/blue/@15191F/loading2/gif
+    -   RGB Text/Background color replace "#" for "@"
+        -   http://localhost:3005/generator/back%20soon!/@0065ff/@15191F/loading2/gif

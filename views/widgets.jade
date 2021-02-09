@@ -1,0 +1,33 @@
+doctype html
+html(lang="en")
+    head
+        title pageTitle
+
+        link(href="https://fonts.googleapis.com/css?family=Roboto", rel="stylesheet")
+        link(href="/views/css/core.min.css", rel="stylesheet")
+        link(href="/views/css/masterslider2.css", rel="stylesheet")
+        link(href="/views/css/widgets.css", rel="stylesheet")
+
+    body(style="background-color: #{bgColor}")
+        div#masterslider.master-slider.ms-skin-light-2
+            div.ms-slide
+
+                img#float.ms-layer.color0(src="",
+                                            data-resize="true",
+                                            data-origin="mc",
+                                            data-src="/views/img/#{imageName}.#{imageFormat}",
+                                            data-type="image",
+                                            data-offset-y="-100")
+
+                
+                h1#text1.ms-layer.font.title-xlarge.size.color1.shadow.center.css1(data-type="text",
+                                                                                    data-origin="mc",
+                                                                                    data-offset-y="150") #{text}
+        script(src="/views/plugins/jquery.min.js")
+        script(src="/views/plugins/jquery.easing.min.js")
+        script(src="/views/plugins/masterslider.min.js")
+        script(src="/views/js/widgets.js")
+    
+
+
+                

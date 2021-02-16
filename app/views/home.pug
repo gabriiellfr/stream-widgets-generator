@@ -1,0 +1,162 @@
+doctype html
+html(lang="en")
+    head
+        title pageTitle
+        link(href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css", rel="stylesheet")
+        link(href="/views/css/home.css", rel="stylesheet")
+    body
+        div.container-fluid
+            div.row
+                div.col-lg-4
+                    div.row
+                        div.form-group.col-md-6
+                            label(for='inputText') Text
+                            input#inputText.form-control(type='text', name="inputText")
+                        div.form-group.col-md-6
+                            label(for='inputTextColor') Text-Color
+                            input#inputTextColor.form-control(type="color", name="inputTextColor")
+                        div.form-group.col-md-6
+                            label(for='inputBackgroundColor') Background-Color
+                            input#inputBackgroundColor.form-control(type="color", name="inputBackgroundColor")
+                        div.form-group.col-md-6
+                            form(id="form1", method="post", enctype="multipart/form-data")
+                                label(for='inputBackgroundUpload') Background-Image
+                                input#InputFileUpload.form-control(type="file", name='InputFileUpload', multiple, accept=".png, .jpg, .gif")
+                                
+                    div.row#imagesGroup
+
+                div.col-lg-8
+                    input(type="text", id="pathFrame", style="width: 100%")
+                    iframe(src=`http://${host}/widgets/%20/@201e1e/@201e1e/loading/gif`, id="iframe1", frameborder="1")                     
+      
+        script(src="https://code.jquery.com/jquery-3.5.1.min.js")
+        script(src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")
+        script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js")
+        script.
+
+            function uploadFn() {
+
+                $("#InputFileUpload").on("change", (event) => {
+                    event.preventDefault();
+
+                    $.ajax({
+                        url: '/widgets', 
+                        type: 'POST',
+                        data: new FormData($('#form1')[0]),
+                        processData: false,
+                        contentType: false
+                    }).done((res) => {
+
+                        console.log(res);
+                        $("#imagesGroup").empty();
+                        $("#InputFileUpload").val("");
+                        $("#addAlert").text(res).show().fadeTo(2000, 500).slideUp(500);
+
+                        processImages();
+                    }).fail(() => {
+
+                        console.log("An error occurred, the files couldn't be sent!");
+                    });
+                });
+            }
+
+            const fetchImages = (cb) => {
+                $.get("/fetchImgs", (data) => {
+                    cb(data);
+                });
+            };
+
+            function processImages() {
+
+                fetchImages((images) => {
+
+                    images.forEach((image, index) => {
+
+                        const template = `<div class='col-lg-3'><img src='/views/img/${image}' id='img${index}'/></div>`
+                        $("#imagesGroup").append(template);
+
+                        $(`#img${index}`).on("click", (event) => {
+                            event.preventDefault();
+
+                            let frameSrc = $("#iframe1").attr('src').split("/"),
+                                imgSrc = $(`#img${index}`).attr("src").split("/");
+
+                            imgSrc = imgSrc[imgSrc.length -1].split(".")
+
+                            frameSrc[frameSrc.length - 2] = imgSrc[0];
+                            frameSrc[frameSrc.length - 1] = imgSrc[1];
+
+                            frameSrc = frameSrc.toString().replaceAll(",", "/");
+
+                            $("#iframe1").attr('src', frameSrc);
+                            $("#pathFrame").val($("#iframe1").attr('src'));
+                            
+                        });
+                    });
+                })
+            }
+
+            function processFields() {
+
+                let fields = [{
+                        id: "inputText",
+                        position: 4,
+                        replace: false
+                    },
+                    {
+                        id: "inputTextColor",
+                        position: 5,
+                        replace: true
+                    },
+                    {
+                        id: "inputBackgroundColor",
+                        position: 6,
+                        replace: true
+                    }];
+
+                fields.forEach((field, index) => {
+
+                    $(`#${field.id}`).on("change", () => {
+
+                        let frameSrc = $("#iframe1").attr('src').split("/"),
+                            element = $(`#${field.id}`);
+
+                        if(field.replace)
+                            frameSrc[field.position] = element.val().replaceAll("#", "@")
+                        else 
+                            frameSrc[field.position] = element.val();
+
+                        frameSrc = frameSrc.toString().replaceAll(",", "/");
+
+                        $("#iframe1").attr('src', frameSrc);
+                        $("#pathFrame").val($("#iframe1").attr('src'));
+                    });
+                });
+            }
+
+            function processIframeURL() {
+
+                $("#pathFrame").on("change", () => {
+
+                    let element = $("#pathFrame");
+
+                    $("#iframe1").attr('src', $("#pathFrame").val());
+                });
+
+                console.log($("#iframe1").attr('src').split("/")[5].replaceAll("@", "#"))
+
+                $("#inputText").val($("#iframe1").attr('src').split("/")[4]);
+                $("#inputTextColor").val($("#iframe1").attr('src').split("/")[5].replaceAll("@", "#"));
+                $("#inputBackgroundColor").val($("#iframe1").attr('src').split("/")[6].replaceAll("@", "#"));
+                $("#pathFrame").val($("#iframe1").attr('src'));
+            }
+
+            $(() => {
+
+                processImages();
+                processFields();
+                processIframeURL();
+                uploadFn()
+            });
+
+

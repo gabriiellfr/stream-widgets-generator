@@ -24,9 +24,13 @@ npm start
 
 Example
 
--   http://localhost:3005/generator/:text/:textColor/:bgColor/:imageName/:imageFormat
-
-    -   http://localhost:3005/generator/back%20soon!/green/black/loading/gif
+-   http://localhost:3005/widgets/:text/:textColor/:bgColor/:imageName?/:imageFormat?
 
     -   RGB Text/Background color replace "#" for "@"
-        -   http://localhost:3005/generator/back%20soon!/@0065ff/@15191F/loading2/gif
+        -   http://localhost:3005/widgets/back%20soon!/@0065ff/@15191F/loading/gif
+
+
+## To do
+- [] Export as image
+- [] Spotify 
+- [] Chat

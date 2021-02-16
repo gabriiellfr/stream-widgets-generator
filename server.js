@@ -1,27 +1,29 @@
 const express = require("express"),
     cors = require("cors"),
-    app = express(),
-    PORT = 3005;
+    logger = require("morgan"),
+    bodyParser = require("body-parser"),
+    path = require("path");
+
+const index = require("./app/routes/index"),
+    widgets = require("./app/routes/widgets");
+
+const app = express(),
+    port = 3000;
+
+// view engine setup
+app.set("views", path.join(__dirname, "app", "views"));
+app.set("view engine", "pug");
 
 app.use(cors());
-app.use("/views", express.static("views"));
-app.set("view engine", "jade");
+app.use(logger("dev"));
+app.use(bodyParser.json());
 
-app.get(
-    "/generator/:text/:textColor/:bgColor/:imageName/:imageFormat",
-    (req, res) => {
-        console.log(req.params);
+app.use("/", index);
+app.use("/widgets", widgets);
 
-        res.render("widgets", {
-            text: req.params.text,
-            textColor: req.params.textColor.replace("@", "#"),
-            bgColor: req.params.bgColor.replace("@", "#"),
-            imageName: req.params.imageName,
-            imageFormat: req.params.imageFormat
-        });
-    }
-);
+app.use("/views", express.static(path.join(__dirname, "app", "views")));
+app.use("/views/uploads", express.static(path.join(__dirname, "app", "uploads")));
 
-app.listen(PORT, () => {
-    console.log(`Listening port ${PORT}`);
+app.listen(port, () => {
+    console.log("Listening port", port);
 });

@@ -1,9 +1,4 @@
-const router = require("express").Router(),
-    upload = require("../utils/fileUpload")
-
-router.get("/", (req, res, next) => {
-    res.send("Nothing here...");
-});
+const router = require("express").Router();
 
 router.get("/:text/:textColor/:bgColor/:imageName?/:imageFormat?", (req, res) => {
     res.render("widgets", {
@@ -14,10 +9,6 @@ router.get("/:text/:textColor/:bgColor/:imageName?/:imageFormat?", (req, res) =>
         imageName: req.params.imageName,
         imageFormat: req.params.imageFormat
     });
-});
-
-router.post("/", upload.uploadFiles, function (req, res) {
-    res.send("File upload sucessfully.");
 });
 
 module.exports = router;

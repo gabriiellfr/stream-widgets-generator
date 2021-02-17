@@ -24,6 +24,10 @@ app.use("/widgets", widgets);
 app.use("/views", express.static(path.join(__dirname, "app", "views")));
 app.use("/views/uploads", express.static(path.join(__dirname, "app", "uploads")));
 
+app.get("*", (req, res) => {
+    res.status(404).redirect("/home");
+});
+
 app.listen(port, () => {
     console.log("Listening port", port);
 });
